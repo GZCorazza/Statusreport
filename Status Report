@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Report Executivo - TI</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #F1F5F9;
+            --bg-card: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --primary: #4F46E5;
+            --green: #10B981;
+            --yellow: #F59E0B;
+            --red: #EF4444;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 30px;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title h1 { font-size: 1.6rem; margin: 0; letter-spacing: -0.02em; }
+        .header-title p { color: var(--text-muted); margin: 4px 0 0; font-size: 0.9rem; }
+
+        /* Estilo do Botão de Impressão */
+        .btn-print {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-print:hover { opacity: 0.9; }
+
+        /* Grid */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: auto;
+            page-break-inside: avoid; /* Evita quebra do card no meio na impressão */
+        }
+
+        .card-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .project-info h2 { font-size: 1.1rem; margin: 0; }
+        .project-info span { font-size: 0.8rem; color: var(--text-muted); }
+
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .on-track { color: var(--green); background: #f0fdf4; border: 1px solid #dcfce7; }
+        .at-risk { color: var(--yellow); background: #fffbeb; border: 1px solid #fef3c7; }
+        .blocked { color: var(--red); background: #fef2f2; border: 1px solid #fee2e2; }
+
+        .card-section { margin-bottom: 12px; }
+        .card-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-section p, .card-section li { font-size: 0.85rem; color: #334155; line-height: 1.4; }
+        ul { padding-left: 0; list-style: none; margin: 0; }
+        li { margin-bottom: 4px; padding-left: 10px; border-left: 2px solid transparent; }
+        .positive-list li { border-left-color: var(--green); }
+        .risk-list li { border-left-color: var(--red); }
+
+        .progress-bar-bg { background: #E2E8F0; height: 5px; border-radius: 10px; width: 100%; margin-top: 10px;}
+        .progress-fill { background: var(--primary); height: 100%; border-radius: 10px; }
+
+        /* REGRAS PARA IMPRESSÃO */
+        @media print {
+            body { background-color: white; padding: 0; }
+            .btn-print { display: none; } /* Esconde o botão no papel */
+            .dashboard { max-width: 100%; }
+            .project-grid { 
+                grid-template-columns: repeat(2, 1fr); /* 2 colunas no papel fica melhor para ler */
+                gap: 10px;
+            }
+            .card {
+                border: 1px solid #ccc;
+                box-shadow: none;
+                margin-bottom: 10px;
+            }
+            header { border-bottom: 2px solid #333; padding-bottom: 10px; }
+        }
+
+        @media (max-width: 1100px) { .project-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 700px) { .project-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <header>
+        <div class="header-title">
+            <h1>Relatório de Portfolio TI</h1>
+            <p>6 Projetos Prioritários • 13 de Fevereiro, 2026</p>
+        </div>
+        <button class="btn-print" onclick="window.print()">
+            <i class="fas fa-print"></i> Imprimir / Salvar PDF
+        </button>
+    </header>
+
+    <div class="project-grid">
+        <div class="card">
+            <div class="card-header">
+                <div class="project-info"><h2>Migração AWS</h2><span>Infra</span></div>
+                <div class="status-pill on-track">No Prazo</div>
+            </div>
+            <div class="card-section">
+                <h3><i class="fas fa-file-alt"></i> Resumo</h3>
+                <p>Transferência de servidores legados concluída sem intercorrências.</p>
+            </div>
+            <div class="card-section">
+                <h3><i class="fas fa-plus-circle"></i> Positivos</h3>
+                <ul class="positive-list"><li>Performance 30% superior.</li></ul>
+            </div>
+            <div class="card-section">
+                <h3><i class="fas fa-exclamation-circle"></i> Riscos</h3>
+                <ul class="risk-list"><li>Ajuste de custos variáveis.</li></ul>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-fill" style="width: 85%"></div></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="project-info"><h2>Novo ERP</h2><span>Sistemas</span></div>
+                <div class="status-pill at-risk">Atenção</div>
+            </div>
+            <div class="card-section"><h3>Resumo</h3><p>Fase de testes atrasada pela equipe fiscal.</p></div>
+            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Treinamento concluído.</li></ul></div>
+            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Atraso no Go-Live.</li></ul></div>
+            <div class="progress-bar-bg"><div class="progress-fill" style="width: 50%; background: var(--yellow)"></div></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="project-info"><h2>Segurança SOC</h2><span>Cyber</span></div>
+                <div class="status-pill on-track">No Prazo</div>
+            </div>
+            <div class="card-section"><h3>Resumo</h3><p>Instalação de agentes de monitoramento em 90% do parque.</p></div>
+            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Visibilidade total de ameaças.</li></ul></div>
+            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Nenhum detectado.</li></ul></div>
+            <div class="progress-bar-bg"><div class="progress-fill" style="width: 90%"></div></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="project-info"><h2>App Mobile</h2><span>Digital</span></div>
+                <div class="status-pill blocked">Bloqueado</div>
+            </div>
+            <div class="card-section"><h3>Resumo</h3><p>Erro na integração com gateway de pagamento externo.</p></div>
+            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>UX/UI finalizada.</li></ul></div>
+            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Dependência de terceiros.</li></ul></div>
+            <div class="progress-bar-bg"><div class="progress-fill" style="width: 30%; background: var(--red)"></div></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="project-info"><h2>Data Lake</h2><span>Dados</span></div>
+                <div class="status-pill on-track">No Prazo</div>
+            </div>
+            <div class="card-section"><h3>Resumo</h3><p>Criação das camadas Raw e Trusted finalizadas.</p></div>
+            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Ingestão de dados automática.</li></ul></div>
+            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Saneamento de dados.</li></ul></div>
+            <div class="progress-bar-bg"><div class="progress-fill" style="width: 65%"></div></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="project-info"><h2>W-Fi Filiais</h2><span>Infra</span></div>
+                <div class="status-pill at-risk">Atenção</div>
+            </div>
+            <div class="card-section"><h3>Resumo</h3><p>Aguardando entrega de access points importados.</p></div>
+            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Infra de cabos pronta.</li></ul></div>
+            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Prazo da alfândega.</li></ul></div>
+            <div class="progress-bar-bg"><div class="progress-fill" style="width: 40%; background: var(--yellow)"></div></div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
