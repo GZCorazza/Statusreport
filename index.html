@@ -1,229 +1,289 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status Report Executivo - TI</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --bg-body: #F1F5F9;
-            --bg-card: #FFFFFF;
-            --text-main: #0F172A;
-            --text-muted: #64748B;
-            --border-color: #E2E8F0;
-            --primary: #4F46E5;
-            --green: #10B981;
-            --yellow: #F59E0B;
-            --red: #EF4444;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Executivo de Portfólio</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --surface: #111a31;
+      --surface-soft: #182542;
+      --text: #e6ecff;
+      --muted: #9fb0d9;
+      --line: #243457;
+      --ok: #18c37e;
+      --warn: #ffb020;
+      --risk: #ff5d5d;
+      --info: #4d86ff;
+    }
 
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            margin: 0;
-            padding: 30px;
-        }
+    * { box-sizing: border-box; }
 
-        .dashboard {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at top right, #1a2850, var(--bg) 35%);
+      color: var(--text);
+    }
 
-        header {
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px;
+      display: grid;
+      gap: 18px;
+    }
 
-        .header-title h1 { font-size: 1.6rem; margin: 0; letter-spacing: -0.02em; }
-        .header-title p { color: var(--text-muted); margin: 4px 0 0; font-size: 0.9rem; }
+    .panel {
+      background: linear-gradient(155deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(5, 8, 18, 0.4);
+    }
 
-        /* Estilo do Botão de Impressão */
-        .btn-print {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: opacity 0.2s;
-        }
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px;
+      gap: 16px;
+    }
 
-        .btn-print:hover { opacity: 0.9; }
+    h1 { margin: 0; font-size: 1.6rem; }
+    .subtitle { color: var(--muted); margin-top: 6px; font-size: 0.95rem; }
 
-        /* Grid */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 20px;
-        }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
-        .card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            height: auto;
-            page-break-inside: avoid; /* Evita quebra do card no meio na impressão */
-        }
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
 
-        .card-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
-        .project-info h2 { font-size: 1.1rem; margin: 0; }
-        .project-info span { font-size: 0.8rem; color: var(--text-muted); }
+    .btn-primary { background: linear-gradient(135deg, #4d86ff, #6a5cff); color: white; }
+    .btn-muted { background: #22345c; color: #dce6ff; }
 
-        .status-pill {
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 700;
-        }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(130px, 1fr));
+      gap: 10px;
+      padding: 0 22px 20px;
+    }
 
-        .on-track { color: var(--green); background: #f0fdf4; border: 1px solid #dcfce7; }
-        .at-risk { color: var(--yellow); background: #fffbeb; border: 1px solid #fef3c7; }
-        .blocked { color: var(--red); background: #fef2f2; border: 1px solid #fee2e2; }
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+    }
 
-        .card-section { margin-bottom: 12px; }
-        .card-section h3 {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+    .kpi small { color: var(--muted); display: block; font-size: .78rem; }
+    .kpi strong { font-size: 1.4rem; margin-top: 6px; display: block; }
 
-        .card-section p, .card-section li { font-size: 0.85rem; color: #334155; line-height: 1.4; }
-        ul { padding-left: 0; list-style: none; margin: 0; }
-        li { margin-bottom: 4px; padding-left: 10px; border-left: 2px solid transparent; }
-        .positive-list li { border-left-color: var(--green); }
-        .risk-list li { border-left-color: var(--red); }
+    .main-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 18px;
+    }
 
-        .progress-bar-bg { background: #E2E8F0; height: 5px; border-radius: 10px; width: 100%; margin-top: 10px;}
-        .progress-fill { background: var(--primary); height: 100%; border-radius: 10px; }
+    .project-list { padding: 18px; }
 
-        /* REGRAS PARA IMPRESSÃO */
-        @media print {
-            body { background-color: white; padding: 0; }
-            .btn-print { display: none; } /* Esconde o botão no papel */
-            .dashboard { max-width: 100%; }
-            .project-grid { 
-                grid-template-columns: repeat(2, 1fr); /* 2 colunas no papel fica melhor para ler */
-                gap: 10px;
-            }
-            .card {
-                border: 1px solid #ccc;
-                box-shadow: none;
-                margin-bottom: 10px;
-            }
-            header { border-bottom: 2px solid #333; padding-bottom: 10px; }
-        }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; font-size: .82rem; text-transform: uppercase; }
 
-        @media (max-width: 1100px) { .project-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 700px) { .project-grid { grid-template-columns: 1fr; } }
-    </style>
+    .status {
+      display: inline-flex;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 700;
+      border: 1px solid;
+    }
+
+    .on-track { color: var(--ok); border-color: rgba(24,195,126,.5); background: rgba(24,195,126,.1); }
+    .attention { color: var(--warn); border-color: rgba(255,176,32,.5); background: rgba(255,176,32,.12); }
+    .blocked { color: var(--risk); border-color: rgba(255,93,93,.5); background: rgba(255,93,93,.12); }
+
+    .bar {
+      width: 100%;
+      height: 8px;
+      background: #253962;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .bar > span { display: block; height: 100%; background: linear-gradient(90deg, #4d86ff, #6a5cff); }
+
+    .right-col { display: grid; gap: 18px; }
+
+    .summary, .editor { padding: 18px; }
+
+    .legend { display: grid; gap: 10px; margin-top: 10px; }
+    .legend-item { display: grid; grid-template-columns: 88px 1fr 32px; align-items: center; gap: 8px; font-size: .85rem; }
+    .legend-item .track { height: 8px; background: #263a63; border-radius: 999px; overflow: hidden; }
+    .legend-item .fill { height: 100%; }
+
+    textarea {
+      width: 100%;
+      min-height: 210px;
+      background: #0e1830;
+      color: #d8e4ff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .78rem;
+      line-height: 1.4;
+    }
+
+    .hint { color: var(--muted); font-size: .8rem; margin-top: 8px; }
+
+    @media (max-width: 980px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+    }
+  </style>
 </head>
 <body>
-
-<div class="dashboard">
-    <header>
-        <div class="header-title">
-            <h1>Relatório de Portfolio TI</h1>
-            <p>6 Projetos Prioritários • 13 de Fevereiro, 2026</p>
+  <div class="container">
+    <section class="panel">
+      <div class="hero">
+        <div>
+          <h1 id="title"></h1>
+          <div id="subtitle" class="subtitle"></div>
         </div>
-        <button class="btn-print" onclick="window.print()">
-            <i class="fas fa-print"></i> Imprimir / Salvar PDF
-        </button>
-    </header>
-
-    <div class="project-grid">
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>Migração AWS</h2><span>Infra</span></div>
-                <div class="status-pill on-track">No Prazo</div>
-            </div>
-            <div class="card-section">
-                <h3><i class="fas fa-file-alt"></i> Resumo</h3>
-                <p>Transferência de servidores legados concluída sem intercorrências.</p>
-            </div>
-            <div class="card-section">
-                <h3><i class="fas fa-plus-circle"></i> Positivos</h3>
-                <ul class="positive-list"><li>Performance 30% superior.</li></ul>
-            </div>
-            <div class="card-section">
-                <h3><i class="fas fa-exclamation-circle"></i> Riscos</h3>
-                <ul class="risk-list"><li>Ajuste de custos variáveis.</li></ul>
-            </div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 85%"></div></div>
+        <div class="actions">
+          <button class="btn-primary" onclick="applyEditorData()">Aplicar atualização semanal</button>
+          <button class="btn-muted" onclick="window.print()">Exportar PDF</button>
         </div>
+      </div>
+      <div class="kpi-grid" id="kpis"></div>
+    </section>
 
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>Novo ERP</h2><span>Sistemas</span></div>
-                <div class="status-pill at-risk">Atenção</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Fase de testes atrasada pela equipe fiscal.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Treinamento concluído.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Atraso no Go-Live.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 50%; background: var(--yellow)"></div></div>
-        </div>
+    <section class="main-grid">
+      <article class="panel project-list">
+        <h2 style="margin-top: 0">Projetos prioritários</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Projeto</th>
+              <th>Status</th>
+              <th>Progresso</th>
+              <th>Próximo marco</th>
+              <th>Mensagem executiva</th>
+            </tr>
+          </thead>
+          <tbody id="projects"></tbody>
+        </table>
+      </article>
 
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>Segurança SOC</h2><span>Cyber</span></div>
-                <div class="status-pill on-track">No Prazo</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Instalação de agentes de monitoramento em 90% do parque.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Visibilidade total de ameaças.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Nenhum detectado.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 90%"></div></div>
-        </div>
+      <div class="right-col">
+        <article class="panel summary">
+          <h2 style="margin-top:0">Distribuição de status</h2>
+          <div class="legend" id="statusChart"></div>
+        </article>
 
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>App Mobile</h2><span>Digital</span></div>
-                <div class="status-pill blocked">Bloqueado</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Erro na integração com gateway de pagamento externo.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>UX/UI finalizada.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Dependência de terceiros.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 30%; background: var(--red)"></div></div>
-        </div>
+        <article class="panel editor">
+          <h2 style="margin-top:0">Editor semanal (JSON)</h2>
+          <textarea id="editor"></textarea>
+          <div class="hint">Edite data da semana, KPIs e projetos. Clique em <strong>Aplicar atualização semanal</strong> para refletir no dashboard.</div>
+        </article>
+      </div>
+    </section>
+  </div>
 
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>Data Lake</h2><span>Dados</span></div>
-                <div class="status-pill on-track">No Prazo</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Criação das camadas Raw e Trusted finalizadas.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Ingestão de dados automática.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Saneamento de dados.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 65%"></div></div>
-        </div>
+  <script>
+    const baseData = {
+      reportTitle: "Dashboard Executivo de Portfólio de Projetos",
+      week: "Semana 07 • Fevereiro 2026",
+      owner: "PMO Corporativo",
+      kpis: [
+        { label: "Projetos ativos", value: 12 },
+        { label: "No prazo", value: 8 },
+        { label: "Em atenção", value: 3 },
+        { label: "Bloqueados", value: 1 },
+        { label: "Budget consumido", value: "63%" }
+      ],
+      projects: [
+        { name: "Programa ERP", area: "Backoffice", status: "attention", progress: 68, milestone: "Teste integrado concluído (14/02)", note: "Atenção no cronograma fiscal. Mitigação já em execução." },
+        { name: "Plataforma Analytics", area: "Dados", status: "on-track", progress: 74, milestone: "Go-live da camada semântica (18/02)", note: "Aumento de produtividade em relatórios gerenciais." },
+        { name: "App Cliente 2.0", area: "Digital", status: "blocked", progress: 41, milestone: "Integração antifraude (pendente)", note: "Dependência crítica externa. Escalonamento realizado." },
+        { name: "Modernização Cloud", area: "Infraestrutura", status: "on-track", progress: 83, milestone: "Desativação datacenter legado (20/02)", note: "Redução prevista de 28% em custo operacional." },
+        { name: "Programa Cibersegurança", area: "Risco", status: "on-track", progress: 77, milestone: "Cobertura EDR em 100% da operação", note: "Sem incidentes relevantes nesta semana." }
+      ]
+    };
 
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>W-Fi Filiais</h2><span>Infra</span></div>
-                <div class="status-pill at-risk">Atenção</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Aguardando entrega de access points importados.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Infra de cabos pronta.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Prazo da alfândega.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 40%; background: var(--yellow)"></div></div>
-        </div>
+    const statusMeta = {
+      "on-track": { label: "No prazo", className: "on-track", color: "#18c37e" },
+      "attention": { label: "Atenção", className: "attention", color: "#ffb020" },
+      "blocked": { label: "Bloqueado", className: "blocked", color: "#ff5d5d" }
+    };
 
-    </div>
-</div>
+    let currentData = structuredClone(baseData);
 
+    function renderDashboard(data) {
+      document.getElementById("title").textContent = data.reportTitle;
+      document.getElementById("subtitle").textContent = `${data.week} • Responsável: ${data.owner}`;
+
+      document.getElementById("kpis").innerHTML = data.kpis
+        .map(k => `<div class="kpi"><small>${k.label}</small><strong>${k.value}</strong></div>`)
+        .join("");
+
+      document.getElementById("projects").innerHTML = data.projects.map(project => {
+        const meta = statusMeta[project.status] || statusMeta.attention;
+        return `
+          <tr>
+            <td><strong>${project.name}</strong><br><span style="color:var(--muted);font-size:.8rem">${project.area}</span></td>
+            <td><span class="status ${meta.className}">${meta.label}</span></td>
+            <td>
+              <div style="font-weight:700">${project.progress}%</div>
+              <div class="bar"><span style="width:${project.progress}%"></span></div>
+            </td>
+            <td>${project.milestone}</td>
+            <td>${project.note}</td>
+          </tr>
+        `;
+      }).join("");
+
+      const total = data.projects.length || 1;
+      const counts = data.projects.reduce((acc, p) => {
+        acc[p.status] = (acc[p.status] || 0) + 1;
+        return acc;
+      }, {});
+
+      document.getElementById("statusChart").innerHTML = ["on-track", "attention", "blocked"].map(key => {
+        const qty = counts[key] || 0;
+        const pct = Math.round((qty / total) * 100);
+        const meta = statusMeta[key];
+        return `
+          <div class="legend-item">
+            <div>${meta.label}</div>
+            <div class="track"><div class="fill" style="width:${pct}%;background:${meta.color}"></div></div>
+            <div style="text-align:right">${qty}</div>
+          </div>
+        `;
+      }).join("");
+
+      document.getElementById("editor").value = JSON.stringify(data, null, 2);
+    }
+
+    function applyEditorData() {
+      const txt = document.getElementById("editor").value;
+      try {
+        const parsed = JSON.parse(txt);
+        currentData = parsed;
+        renderDashboard(currentData);
+      } catch (err) {
+        alert("JSON inválido. Revise o conteúdo do editor semanal.");
+      }
+    }
+
+    renderDashboard(currentData);
+  </script>
 </body>
-
 </html>
