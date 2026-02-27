@@ -1,229 +1,445 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Status Report Executivo - TI</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Status Report Executivo • TI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-body: #F1F5F9;
-            --bg-card: #FFFFFF;
-            --text-main: #0F172A;
-            --text-muted: #64748B;
-            --border-color: #E2E8F0;
-            --primary: #4F46E5;
-            --green: #10B981;
-            --yellow: #F59E0B;
-            --red: #EF4444;
+            --bg: #f5f7fb;
+            --surface: #ffffff;
+            --surface-soft: #f8fafc;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --line: #e2e8f0;
+            --brand: #1d4ed8;
+            --brand-soft: #dbeafe;
+            --success: #059669;
+            --success-soft: #d1fae5;
+            --warning: #d97706;
+            --warning-soft: #fef3c7;
+            --danger: #dc2626;
+            --danger-soft: #fee2e2;
+            --shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+            --radius-xl: 20px;
+            --radius-md: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            margin: 0;
-            padding: 30px;
+            background: radial-gradient(circle at 15% -10%, #dbeafe 0%, transparent 45%), var(--bg);
+            color: var(--text);
+            padding: 36px;
         }
 
         .dashboard {
-            max-width: 1200px;
+            max-width: 1360px;
             margin: 0 auto;
+            display: grid;
+            gap: 24px;
         }
 
-        header {
-            margin-bottom: 30px;
+        .hero {
+            background: linear-gradient(140deg, #0f172a 0%, #1e293b 60%, #0f172a 100%);
+            color: #f8fafc;
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            align-items: flex-start;
         }
 
-        .header-title h1 { font-size: 1.6rem; margin: 0; letter-spacing: -0.02em; }
-        .header-title p { color: var(--text-muted); margin: 4px 0 0; font-size: 0.9rem; }
-
-        /* Estilo do Botão de Impressão */
-        .btn-print {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: opacity 0.2s;
+        .hero h1 {
+            font-size: 1.8rem;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
         }
 
-        .btn-print:hover { opacity: 0.9; }
-
-        /* Grid */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 20px;
+        .hero p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            max-width: 620px;
+            line-height: 1.45;
         }
 
-        .card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            height: auto;
-            page-break-inside: avoid; /* Evita quebra do card no meio na impressão */
+        .hero-meta {
+            text-align: right;
+            min-width: 230px;
         }
 
-        .card-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
-        .project-info h2 { font-size: 1.1rem; margin: 0; }
-        .project-info span { font-size: 0.8rem; color: var(--text-muted); }
+        .hero-meta .period {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
 
-        .status-pill {
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.7rem;
+        .hero-meta .date {
+            font-size: 1.05rem;
             font-weight: 700;
         }
 
-        .on-track { color: var(--green); background: #f0fdf4; border: 1px solid #dcfce7; }
-        .at-risk { color: var(--yellow); background: #fffbeb; border: 1px solid #fef3c7; }
-        .blocked { color: var(--red); background: #fef2f2; border: 1px solid #fee2e2; }
+        .btn-print {
+            margin-top: 14px;
+            background: #f8fafc;
+            color: #0f172a;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
 
-        .card-section { margin-bottom: 12px; }
-        .card-section h3 {
-            font-size: 0.75rem;
-            text-transform: uppercase;
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .kpi {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            padding: 16px;
+        }
+
+        .kpi-label {
             color: var(--text-muted);
-            margin-bottom: 6px;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .kpi strong {
+            display: block;
+            font-size: 1.45rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .kpi span {
+            color: var(--text-muted);
+            font-size: 0.84rem;
+        }
+
+        .portfolio-panel {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--line);
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .panel-header h2 {
+            font-size: 1.15rem;
+        }
+
+        .legend {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .legend span {
+            display: inline-flex;
             align-items: center;
             gap: 6px;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: var(--surface-soft);
+            border: 1px solid var(--line);
         }
 
-        .card-section p, .card-section li { font-size: 0.85rem; color: #334155; line-height: 1.4; }
-        ul { padding-left: 0; list-style: none; margin: 0; }
-        li { margin-bottom: 4px; padding-left: 10px; border-left: 2px solid transparent; }
-        .positive-list li { border-left-color: var(--green); }
-        .risk-list li { border-left-color: var(--red); }
+        .legend i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
 
-        .progress-bar-bg { background: #E2E8F0; height: 5px; border-radius: 10px; width: 100%; margin-top: 10px;}
-        .progress-fill { background: var(--primary); height: 100%; border-radius: 10px; }
+        .table-wrap {
+            overflow-x: auto;
+        }
 
-        /* REGRAS PARA IMPRESSÃO */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 980px;
+        }
+
+        thead th {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-align: left;
+            padding: 14px 24px;
+            background: var(--surface-soft);
+            border-bottom: 1px solid var(--line);
+        }
+
+        tbody td {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--line);
+            font-size: 0.9rem;
+            vertical-align: top;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .project {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stream {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        .status {
+            font-weight: 700;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid;
+        }
+
+        .on-track { color: var(--success); background: var(--success-soft); border-color: #a7f3d0; }
+        .at-risk { color: var(--warning); background: var(--warning-soft); border-color: #fde68a; }
+        .blocked { color: var(--danger); background: var(--danger-soft); border-color: #fecaca; }
+
+        .progress {
+            height: 8px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress > div {
+            height: 100%;
+            border-radius: 999px;
+            background: var(--brand);
+        }
+
+        .highlight, .risk {
+            list-style: none;
+            display: grid;
+            gap: 6px;
+            color: #334155;
+            font-size: 0.84rem;
+        }
+
+        .highlight li::before,
+        .risk li::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            margin-right: 8px;
+            margin-top: 7px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .highlight li::before { background: var(--success); }
+        .risk li::before { background: var(--danger); }
+
+        @media (max-width: 1120px) {
+            .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            body { padding: 22px; }
+        }
+
+        @media (max-width: 700px) {
+            .kpi-grid { grid-template-columns: 1fr; }
+            .hero { padding: 22px; }
+            .hero-meta { text-align: left; }
+            .panel-header { padding: 16px; }
+        }
+
         @media print {
-            body { background-color: white; padding: 0; }
-            .btn-print { display: none; } /* Esconde o botão no papel */
-            .dashboard { max-width: 100%; }
-            .project-grid { 
-                grid-template-columns: repeat(2, 1fr); /* 2 colunas no papel fica melhor para ler */
-                gap: 10px;
-            }
-            .card {
-                border: 1px solid #ccc;
-                box-shadow: none;
-                margin-bottom: 10px;
-            }
-            header { border-bottom: 2px solid #333; padding-bottom: 10px; }
+            body { background: #fff; padding: 0; }
+            .dashboard { gap: 14px; }
+            .hero { box-shadow: none; }
+            .btn-print { display: none; }
+            .portfolio-panel { box-shadow: none; }
         }
-
-        @media (max-width: 1100px) { .project-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 700px) { .project-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-
-<div class="dashboard">
-    <header>
-        <div class="header-title">
-            <h1>Relatório de Portfolio TI</h1>
-            <p>6 Projetos Prioritários • 13 de Fevereiro, 2026</p>
-        </div>
-        <button class="btn-print" onclick="window.print()">
-            <i class="fas fa-print"></i> Imprimir / Salvar PDF
-        </button>
-    </header>
-
-    <div class="project-grid">
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>Migração AWS</h2><span>Infra</span></div>
-                <div class="status-pill on-track">No Prazo</div>
+    <main class="dashboard">
+        <section class="hero">
+            <div>
+                <h1>Status Report Executivo • Portfólio de TI</h1>
+                <p>Visão consolidada dos programas críticos com foco em execução, impacto e previsibilidade. Estrutura otimizada para leitura rápida do board e tomada de decisão em comitê executivo.</p>
             </div>
-            <div class="card-section">
-                <h3><i class="fas fa-file-alt"></i> Resumo</h3>
-                <p>Transferência de servidores legados concluída sem intercorrências.</p>
+            <div class="hero-meta">
+                <div class="period">Fechamento Semanal</div>
+                <div class="date">13 de Fevereiro de 2026</div>
+                <button class="btn-print" onclick="window.print()">Imprimir / Salvar em PDF</button>
             </div>
-            <div class="card-section">
-                <h3><i class="fas fa-plus-circle"></i> Positivos</h3>
-                <ul class="positive-list"><li>Performance 30% superior.</li></ul>
-            </div>
-            <div class="card-section">
-                <h3><i class="fas fa-exclamation-circle"></i> Riscos</h3>
-                <ul class="risk-list"><li>Ajuste de custos variáveis.</li></ul>
-            </div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 85%"></div></div>
-        </div>
+        </section>
 
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>Novo ERP</h2><span>Sistemas</span></div>
-                <div class="status-pill at-risk">Atenção</div>
+        <section class="kpi-grid" aria-label="Resumo executivo">
+            <article class="kpi">
+                <div class="kpi-label">Projetos Prioritários</div>
+                <strong>6</strong>
+                <span>100% cobertos por governança</span>
+            </article>
+            <article class="kpi">
+                <div class="kpi-label">Saúde do Portfólio</div>
+                <strong>73%</strong>
+                <span>Índice ponderado de execução</span>
+            </article>
+            <article class="kpi">
+                <div class="kpi-label">Dentro do Prazo</div>
+                <strong>3</strong>
+                <span>50% dos projetos críticos</span>
+            </article>
+            <article class="kpi">
+                <div class="kpi-label">Demandam Escalonamento</div>
+                <strong>2</strong>
+                <span>1 em risco + 1 bloqueado</span>
+            </article>
+        </section>
+
+        <section class="portfolio-panel">
+            <div class="panel-header">
+                <h2>Pipeline de Execução por Projeto</h2>
+                <div class="legend">
+                    <span><i style="background:#059669"></i>No prazo</span>
+                    <span><i style="background:#d97706"></i>Atenção</span>
+                    <span><i style="background:#dc2626"></i>Bloqueado</span>
+                </div>
             </div>
-            <div class="card-section"><h3>Resumo</h3><p>Fase de testes atrasada pela equipe fiscal.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Treinamento concluído.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Atraso no Go-Live.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 50%; background: var(--yellow)"></div></div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>Segurança SOC</h2><span>Cyber</span></div>
-                <div class="status-pill on-track">No Prazo</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Projeto</th>
+                            <th>Status</th>
+                            <th>Resumo Executivo</th>
+                            <th>Valor Entregue</th>
+                            <th>Risco Principal</th>
+                            <th>Execução</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="project">Migração AWS</div>
+                                <div class="stream">Infraestrutura</div>
+                            </td>
+                            <td><span class="status on-track">No prazo</span></td>
+                            <td>Transferência de servidores legados concluída com estabilidade operacional.</td>
+                            <td><ul class="highlight"><li>Performance 30% superior.</li></ul></td>
+                            <td><ul class="risk"><li>Refino da curva de custo variável.</li></ul></td>
+                            <td>85%
+                                <div class="progress"><div style="width:85%"></div></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="project">Novo ERP</div>
+                                <div class="stream">Sistemas</div>
+                            </td>
+                            <td><span class="status at-risk">Atenção</span></td>
+                            <td>Fase de testes impactada por dependências fiscais e homologações externas.</td>
+                            <td><ul class="highlight"><li>Treinamento das áreas-chave finalizado.</li></ul></td>
+                            <td><ul class="risk"><li>Postergação potencial do Go-live.</li></ul></td>
+                            <td>50%
+                                <div class="progress"><div style="width:50%; background: var(--warning)"></div></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="project">Segurança SOC</div>
+                                <div class="stream">Cybersecurity</div>
+                            </td>
+                            <td><span class="status on-track">No prazo</span></td>
+                            <td>Agentes implantados em 90% do parque com rastreabilidade contínua de eventos.</td>
+                            <td><ul class="highlight"><li>Maior cobertura e tempo de resposta.</li></ul></td>
+                            <td><ul class="risk"><li>Sem risco crítico no ciclo atual.</li></ul></td>
+                            <td>90%
+                                <div class="progress"><div style="width:90%"></div></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="project">App Mobile</div>
+                                <div class="stream">Digital</div>
+                            </td>
+                            <td><span class="status blocked">Bloqueado</span></td>
+                            <td>Integração com gateway de pagamento interrompida por inconsistência no provedor.</td>
+                            <td><ul class="highlight"><li>Jornada UX/UI concluída e aprovada.</li></ul></td>
+                            <td><ul class="risk"><li>Dependência total de terceiro para retomada.</li></ul></td>
+                            <td>30%
+                                <div class="progress"><div style="width:30%; background: var(--danger)"></div></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="project">Data Lake</div>
+                                <div class="stream">Dados & Analytics</div>
+                            </td>
+                            <td><span class="status on-track">No prazo</span></td>
+                            <td>Camadas Raw e Trusted em produção com ingestão automatizada ativa.</td>
+                            <td><ul class="highlight"><li>Base pronta para casos de IA e BI.</li></ul></td>
+                            <td><ul class="risk"><li>Necessidade de acelerar saneamento.</li></ul></td>
+                            <td>65%
+                                <div class="progress"><div style="width:65%"></div></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="project">Wi-Fi Filiais</div>
+                                <div class="stream">Infraestrutura</div>
+                            </td>
+                            <td><span class="status at-risk">Atenção</span></td>
+                            <td>Cronograma condicionado ao desembaraço de equipamentos importados.</td>
+                            <td><ul class="highlight"><li>Cabeamento e infraestrutura local finalizados.</li></ul></td>
+                            <td><ul class="risk"><li>Risco de atraso por logística aduaneira.</li></ul></td>
+                            <td>40%
+                                <div class="progress"><div style="width:40%; background: var(--warning)"></div></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="card-section"><h3>Resumo</h3><p>Instalação de agentes de monitoramento em 90% do parque.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Visibilidade total de ameaças.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Nenhum detectado.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 90%"></div></div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>App Mobile</h2><span>Digital</span></div>
-                <div class="status-pill blocked">Bloqueado</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Erro na integração com gateway de pagamento externo.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>UX/UI finalizada.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Dependência de terceiros.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 30%; background: var(--red)"></div></div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>Data Lake</h2><span>Dados</span></div>
-                <div class="status-pill on-track">No Prazo</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Criação das camadas Raw e Trusted finalizadas.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Ingestão de dados automática.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Saneamento de dados.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 65%"></div></div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>W-Fi Filiais</h2><span>Infra</span></div>
-                <div class="status-pill at-risk">Atenção</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Aguardando entrega de access points importados.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Infra de cabos pronta.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Prazo da alfândega.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 40%; background: var(--yellow)"></div></div>
-        </div>
-
-    </div>
-</div>
-
+        </section>
+    </main>
 </body>
-
 </html>
