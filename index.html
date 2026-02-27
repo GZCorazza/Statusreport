@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,223 +7,493 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --bg-body: #F1F5F9;
-            --bg-card: #FFFFFF;
-            --text-main: #0F172A;
-            --text-muted: #64748B;
-            --border-color: #E2E8F0;
-            --primary: #4F46E5;
-            --green: #10B981;
-            --yellow: #F59E0B;
-            --red: #EF4444;
+            --bg-body: #101010;
+            --bg-card: #1a1a1a;
+            --bg-soft: #242424;
+            --text-main: #f5f5f5;
+            --text-muted: #bbbbbb;
+            --border-color: #3a3a3a;
+            --primary: #d10f2f;
+            --primary-soft: #3a0f16;
+            --success: #ff6b7f;
+            --warning: #ff9a3c;
+            --danger: #ff3a55;
         }
+
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background-color: var(--bg-body);
             color: var(--text-main);
             margin: 0;
-            padding: 30px;
+            padding: 24px;
         }
 
         .dashboard {
-            max-width: 1200px;
+            max-width: 1240px;
             margin: 0 auto;
         }
 
         header {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            gap: 16px;
+            flex-wrap: wrap;
         }
 
-        .header-title h1 { font-size: 1.6rem; margin: 0; letter-spacing: -0.02em; }
-        .header-title p { color: var(--text-muted); margin: 4px 0 0; font-size: 0.9rem; }
+        .header-title h1 { font-size: 1.7rem; margin: 0; letter-spacing: -0.02em; }
+        .header-title p { color: var(--text-muted); margin: 8px 0 0; font-size: 0.95rem; }
 
-        /* Estilo do Botão de Impressão */
-        .btn-print {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: 1px solid var(--border-color);
+            padding: 10px 14px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: opacity 0.2s;
+            transition: transform 0.15s ease, opacity 0.2s ease;
         }
 
-        .btn-print:hover { opacity: 0.9; }
+        .btn:hover { transform: translateY(-1px); }
 
-        /* Grid */
+        .btn-print {
+            background-color: var(--primary);
+            color: #fff;
+            border: 1px solid #7f081b;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .control-panel label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .control-panel input {
+            width: 120px;
+            background: #0f0f0f;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.95rem;
+        }
+
+        .btn-secondary {
+            background: var(--bg-soft);
+            color: var(--text-main);
+        }
+
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .kpi-card h3 {
+            margin: 0 0 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .kpi-card p {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #fff;
+        }
+
         .project-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 20px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 26px;
         }
 
         .card {
             background: var(--bg-card);
             border-radius: 12px;
             border: 1px solid var(--border-color);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            height: auto;
-            page-break-inside: avoid; /* Evita quebra do card no meio na impressão */
+            padding: 16px;
+            page-break-inside: avoid;
         }
 
-        .card-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
-        .project-info h2 { font-size: 1.1rem; margin: 0; }
-        .project-info span { font-size: 0.8rem; color: var(--text-muted); }
+        .card-header { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+        .project-info h2 { font-size: 1.05rem; margin: 0; }
+        .project-info span { font-size: 0.78rem; color: var(--text-muted); }
 
         .status-pill {
             padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.7rem;
+            border-radius: 999px;
+            font-size: 0.72rem;
             font-weight: 700;
+            white-space: nowrap;
         }
 
-        .on-track { color: var(--green); background: #f0fdf4; border: 1px solid #dcfce7; }
-        .at-risk { color: var(--yellow); background: #fffbeb; border: 1px solid #fef3c7; }
-        .blocked { color: var(--red); background: #fef2f2; border: 1px solid #fee2e2; }
+        .on-track { color: #ffc3cd; background: #3a141b; border: 1px solid #5a1e2a; }
+        .at-risk { color: #ffd6b2; background: #3d2410; border: 1px solid #6c3d18; }
+        .blocked { color: #ffb0bc; background: #43101b; border: 1px solid #7d1325; }
 
-        .card-section { margin-bottom: 12px; }
+        .card-section { margin-bottom: 10px; }
         .card-section h3 {
             font-size: 0.75rem;
             text-transform: uppercase;
             color: var(--text-muted);
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            margin: 0 0 5px;
         }
 
-        .card-section p, .card-section li { font-size: 0.85rem; color: #334155; line-height: 1.4; }
+        .card-section p,
+        .card-section li {
+            font-size: 0.84rem;
+            color: #ececec;
+            line-height: 1.35;
+            margin: 0;
+        }
+
         ul { padding-left: 0; list-style: none; margin: 0; }
-        li { margin-bottom: 4px; padding-left: 10px; border-left: 2px solid transparent; }
-        .positive-list li { border-left-color: var(--green); }
-        .risk-list li { border-left-color: var(--red); }
+        li { margin-bottom: 4px; padding-left: 10px; border-left: 2px solid var(--primary); }
 
-        .progress-bar-bg { background: #E2E8F0; height: 5px; border-radius: 10px; width: 100%; margin-top: 10px;}
-        .progress-fill { background: var(--primary); height: 100%; border-radius: 10px; }
-
-        /* REGRAS PARA IMPRESSÃO */
-        @media print {
-            body { background-color: white; padding: 0; }
-            .btn-print { display: none; } /* Esconde o botão no papel */
-            .dashboard { max-width: 100%; }
-            .project-grid { 
-                grid-template-columns: repeat(2, 1fr); /* 2 colunas no papel fica melhor para ler */
-                gap: 10px;
-            }
-            .card {
-                border: 1px solid #ccc;
-                box-shadow: none;
-                margin-bottom: 10px;
-            }
-            header { border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .progress-bar-bg {
+            background: #2b2b2b;
+            height: 6px;
+            border-radius: 10px;
+            width: 100%;
+            margin-top: 10px;
+            overflow: hidden;
         }
 
-        @media (max-width: 1100px) { .project-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 700px) { .project-grid { grid-template-columns: 1fr; } }
+        .progress-fill { background: linear-gradient(90deg, #720919, var(--primary)); height: 100%; }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .tab-btn {
+            background: #121212;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 9px 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.88rem;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-soft);
+            color: #fff;
+            border-color: #7f081b;
+        }
+
+        .project-tab {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .field-group { display: flex; flex-direction: column; gap: 6px; }
+        .field-group.full { grid-column: span 2; }
+        .field-group label { font-size: 0.8rem; color: var(--text-muted); }
+
+        .field-group input,
+        .field-group textarea,
+        .field-group select {
+            width: 100%;
+            background: #0f0f0f;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        .field-group textarea { min-height: 78px; resize: vertical; }
+
+        .helper { color: var(--text-muted); font-size: 0.8rem; margin-top: 6px; }
+
+        @media (max-width: 1100px) {
+            .project-grid { grid-template-columns: repeat(2, 1fr); }
+            .kpi-row { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 760px) {
+            body { padding: 16px; }
+            .project-grid, .kpi-row, .form-grid { grid-template-columns: 1fr; }
+            .field-group.full { grid-column: span 1; }
+            .control-panel { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { background-color: white; color: #111; padding: 0; }
+            .control-panel, .tabs, #projectTabContainer, .btn-print { display: none; }
+            .card, .kpi-card { border-color: #ccc; background: white; color: #111; }
+            .project-grid { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
-
 <div class="dashboard">
     <header>
         <div class="header-title">
             <h1>Relatório de Portfolio TI</h1>
-            <p>6 Projetos Prioritários • 13 de Fevereiro, 2026</p>
+            <p id="headerSubtitle">Dashboard executivo + detalhes por projeto</p>
         </div>
-        <button class="btn-print" onclick="window.print()">
-            <i class="fas fa-print"></i> Imprimir / Salvar PDF
-        </button>
+        <div class="header-actions">
+            <button class="btn btn-print" onclick="window.print()">
+                <i class="fas fa-print"></i> Imprimir / Salvar PDF
+            </button>
+        </div>
     </header>
 
-    <div class="project-grid">
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>Migração AWS</h2><span>Infra</span></div>
-                <div class="status-pill on-track">No Prazo</div>
-            </div>
-            <div class="card-section">
-                <h3><i class="fas fa-file-alt"></i> Resumo</h3>
-                <p>Transferência de servidores legados concluída sem intercorrências.</p>
-            </div>
-            <div class="card-section">
-                <h3><i class="fas fa-plus-circle"></i> Positivos</h3>
-                <ul class="positive-list"><li>Performance 30% superior.</li></ul>
-            </div>
-            <div class="card-section">
-                <h3><i class="fas fa-exclamation-circle"></i> Riscos</h3>
-                <ul class="risk-list"><li>Ajuste de custos variáveis.</li></ul>
-            </div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 85%"></div></div>
+    <section class="control-panel">
+        <div>
+            <label for="projectCount">Quantidade de projetos</label>
+            <input id="projectCount" type="number" min="1" max="20" value="6">
+            <p class="helper">Altere o número e clique em "Aplicar" para criar/remover projetos.</p>
         </div>
-
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>Novo ERP</h2><span>Sistemas</span></div>
-                <div class="status-pill at-risk">Atenção</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Fase de testes atrasada pela equipe fiscal.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Treinamento concluído.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Atraso no Go-Live.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 50%; background: var(--yellow)"></div></div>
+        <div style="display:flex;align-items:flex-end;">
+            <button id="applyCount" class="btn btn-secondary"><i class="fas fa-sync"></i> Aplicar</button>
         </div>
+    </section>
 
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>Segurança SOC</h2><span>Cyber</span></div>
-                <div class="status-pill on-track">No Prazo</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Instalação de agentes de monitoramento em 90% do parque.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Visibilidade total de ameaças.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Nenhum detectado.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 90%"></div></div>
-        </div>
+    <section class="kpi-row" id="kpiRow"></section>
 
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>App Mobile</h2><span>Digital</span></div>
-                <div class="status-pill blocked">Bloqueado</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Erro na integração com gateway de pagamento externo.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>UX/UI finalizada.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Dependência de terceiros.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 30%; background: var(--red)"></div></div>
-        </div>
+    <section>
+        <h2 style="font-size:1.1rem; margin: 0 0 12px;">Dashboard Executivo</h2>
+        <div class="project-grid" id="projectGrid"></div>
+    </section>
 
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>Data Lake</h2><span>Dados</span></div>
-                <div class="status-pill on-track">No Prazo</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Criação das camadas Raw e Trusted finalizadas.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Ingestão de dados automática.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Saneamento de dados.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 65%"></div></div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <div class="project-info"><h2>W-Fi Filiais</h2><span>Infra</span></div>
-                <div class="status-pill at-risk">Atenção</div>
-            </div>
-            <div class="card-section"><h3>Resumo</h3><p>Aguardando entrega de access points importados.</p></div>
-            <div class="card-section"><h3>Positivos</h3><ul class="positive-list"><li>Infra de cabos pronta.</li></ul></div>
-            <div class="card-section"><h3>Riscos</h3><ul class="risk-list"><li>Prazo da alfândega.</li></ul></div>
-            <div class="progress-bar-bg"><div class="progress-fill" style="width: 40%; background: var(--yellow)"></div></div>
-        </div>
-
-    </div>
+    <section style="margin-top: 20px;">
+        <h2 style="font-size:1.1rem; margin: 0 0 12px;">Abas Individuais de Projeto</h2>
+        <div class="tabs" id="projectTabs"></div>
+        <div id="projectTabContainer"></div>
+    </section>
 </div>
 
-</body>
+<script>
+    const statusOptions = [
+        { value: 'on-track', label: 'No Prazo' },
+        { value: 'at-risk', label: 'Atenção' },
+        { value: 'blocked', label: 'Bloqueado' }
+    ];
 
+    const baseProjects = [
+        { nome: 'Migração AWS', area: 'Infra', status: 'on-track', progresso: 85, resumo: 'Transferência de servidores legados concluída sem intercorrências.', realizado: 'Finalização da migração de cargas críticas e testes de stress.', pendencias: 'Ajustar previsão de custos variáveis na nova arquitetura.', proximos: 'Revisão de arquitetura e otimização de instâncias.' },
+        { nome: 'Novo ERP', area: 'Sistemas', status: 'at-risk', progresso: 50, resumo: 'Fase de testes atrasada pela equipe fiscal.', realizado: 'Treinamento dos usuários-chave concluído.', pendencias: 'Aprovar cenários fiscais pendentes para homologação.', proximos: 'Retomar testes integrados e replanejar Go-Live.' },
+        { nome: 'Segurança SOC', area: 'Cyber', status: 'on-track', progresso: 90, resumo: 'Instalação de agentes de monitoramento em 90% do parque.', realizado: 'Integração dos alertas críticos com central de incidentes.', pendencias: 'Cobrir as filiais restantes com agentes SOC.', proximos: 'Concluir runbooks de resposta e treinar N1.' },
+        { nome: 'App Mobile', area: 'Digital', status: 'blocked', progresso: 30, resumo: 'Erro na integração com gateway de pagamento externo.', realizado: 'UX/UI finalizada e testes internos concluídos.', pendencias: 'Ajuste de API do parceiro de pagamento.', proximos: 'Sessão técnica com fornecedor para desbloqueio da integração.' },
+        { nome: 'Data Lake', area: 'Dados', status: 'on-track', progresso: 65, resumo: 'Criação das camadas Raw e Trusted finalizadas.', realizado: 'Automação da ingestão das principais fontes.', pendencias: 'Padronizar dicionário corporativo de dados.', proximos: 'Iniciar camada Curated para analytics executivo.' },
+        { nome: 'Wi-Fi Filiais', area: 'Infra', status: 'at-risk', progresso: 40, resumo: 'Aguardando entrega de access points importados.', realizado: 'Infraestrutura de cabeamento pronta nas unidades.', pendencias: 'Entrega e desembaraço dos equipamentos.', proximos: 'Instalação dos APs e ativação por região.' }
+    ];
+
+    const projects = [...baseProjects];
+    let activeTab = 0;
+
+    function getStatusLabel(status) {
+        const found = statusOptions.find((s) => s.value === status);
+        return found ? found.label : status;
+    }
+
+    function normalizeProject(index) {
+        return {
+            nome: `Projeto ${index + 1}`,
+            area: 'Área',
+            status: 'on-track',
+            progresso: 0,
+            resumo: 'Resumo executivo do projeto.',
+            realizado: 'Principais entregas da última semana.',
+            pendencias: 'Pendências críticas a acompanhar.',
+            proximos: 'Próximos passos planejados.'
+        };
+    }
+
+    function ensureProjectCount(count) {
+        while (projects.length < count) {
+            projects.push(normalizeProject(projects.length));
+        }
+        while (projects.length > count) {
+            projects.pop();
+        }
+        if (activeTab >= projects.length) activeTab = projects.length - 1;
+    }
+
+    function renderKpis() {
+        const row = document.getElementById('kpiRow');
+        const total = projects.length;
+        const noPrazo = projects.filter((p) => p.status === 'on-track').length;
+        const atencao = projects.filter((p) => p.status === 'at-risk').length;
+        const bloqueados = projects.filter((p) => p.status === 'blocked').length;
+        const media = Math.round(projects.reduce((acc, p) => acc + Number(p.progresso || 0), 0) / total || 0);
+
+        row.innerHTML = `
+            <article class="kpi-card"><h3>Projetos</h3><p>${total}</p></article>
+            <article class="kpi-card"><h3>No Prazo</h3><p>${noPrazo}</p></article>
+            <article class="kpi-card"><h3>Atenção/Bloqueados</h3><p>${atencao + bloqueados}</p></article>
+            <article class="kpi-card"><h3>Progresso Médio</h3><p>${media}%</p></article>
+        `;
+
+        const subtitle = document.getElementById('headerSubtitle');
+        const dataAtual = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+        subtitle.textContent = `${total} projetos • Atualizado em ${dataAtual}`;
+    }
+
+    function renderDashboard() {
+        const grid = document.getElementById('projectGrid');
+        grid.innerHTML = projects.map((project) => `
+            <article class="card">
+                <div class="card-header">
+                    <div class="project-info">
+                        <h2>${project.nome}</h2>
+                        <span>${project.area}</span>
+                    </div>
+                    <div class="status-pill ${project.status}">${getStatusLabel(project.status)}</div>
+                </div>
+                <div class="card-section"><h3>Resumo</h3><p>${project.resumo}</p></div>
+                <div class="card-section"><h3>Realizado na última semana</h3><p>${project.realizado}</p></div>
+                <div class="card-section"><h3>Pendências</h3><ul><li>${project.pendencias}</li></ul></div>
+                <div class="card-section"><h3>Próximos passos</h3><ul><li>${project.proximos}</li></ul></div>
+                <div class="progress-bar-bg"><div class="progress-fill" style="width:${project.progresso}%"></div></div>
+            </article>
+        `).join('');
+    }
+
+    function renderTabs() {
+        const tabs = document.getElementById('projectTabs');
+        tabs.innerHTML = projects.map((project, index) => `
+            <button class="tab-btn ${index === activeTab ? 'active' : ''}" data-index="${index}">${project.nome}</button>
+        `).join('');
+
+        tabs.querySelectorAll('button').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                activeTab = Number(btn.dataset.index);
+                renderTabs();
+                renderProjectForm();
+            });
+        });
+    }
+
+    function renderProjectForm() {
+        const container = document.getElementById('projectTabContainer');
+        const project = projects[activeTab];
+        if (!project) {
+            container.innerHTML = '';
+            return;
+        }
+
+        container.innerHTML = `
+            <article class="project-tab">
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label>Nome do projeto</label>
+                        <input data-field="nome" value="${project.nome}">
+                    </div>
+                    <div class="field-group">
+                        <label>Área</label>
+                        <input data-field="area" value="${project.area}">
+                    </div>
+                    <div class="field-group">
+                        <label>Status</label>
+                        <select data-field="status">
+                            ${statusOptions.map((option) => `<option value="${option.value}" ${project.status === option.value ? 'selected' : ''}>${option.label}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label>Progresso (%)</label>
+                        <input data-field="progresso" type="number" min="0" max="100" value="${project.progresso}">
+                    </div>
+                    <div class="field-group full">
+                        <label>Resumo executivo</label>
+                        <textarea data-field="resumo">${project.resumo}</textarea>
+                    </div>
+                    <div class="field-group full">
+                        <label>Realizado na última semana</label>
+                        <textarea data-field="realizado">${project.realizado}</textarea>
+                    </div>
+                    <div class="field-group full">
+                        <label>Pendências</label>
+                        <textarea data-field="pendencias">${project.pendencias}</textarea>
+                    </div>
+                    <div class="field-group full">
+                        <label>Próximos passos</label>
+                        <textarea data-field="proximos">${project.proximos}</textarea>
+                    </div>
+                </div>
+            </article>
+        `;
+
+        container.querySelectorAll('[data-field]').forEach((field) => {
+            field.addEventListener('input', (event) => {
+                const key = event.target.dataset.field;
+                let value = event.target.value;
+                if (key === 'progresso') {
+                    value = Math.max(0, Math.min(100, Number(value) || 0));
+                }
+                projects[activeTab][key] = value;
+                renderKpis();
+                renderDashboard();
+                if (key === 'nome') renderTabs();
+            });
+        });
+    }
+
+    document.getElementById('applyCount').addEventListener('click', () => {
+        const input = document.getElementById('projectCount');
+        const count = Math.max(1, Math.min(20, Number(input.value) || 1));
+        input.value = count;
+        ensureProjectCount(count);
+        renderAll();
+    });
+
+    function renderAll() {
+        renderKpis();
+        renderDashboard();
+        renderTabs();
+        renderProjectForm();
+    }
+
+    renderAll();
+</script>
+</body>
 </html>
